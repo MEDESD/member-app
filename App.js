@@ -8,11 +8,16 @@ import Action from "./pages/action";
 import Profile from "./pages/profile";
 import Home from "./pages/home";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import {createStackNavigator} from '@react-navigation/stack';
+import {createNavigationContainerRef} from '@react-navigation/native';
+import QrCode from "./pages/qr-code";
+import {BarCodeScanner} from "expo-barcode-scanner";
 
-const Tab = createBottomTabNavigator();
 
 export default function App() {
+    const Tab = createBottomTabNavigator();
 
+    const navigationRef = createNavigationContainerRef()
 
     const [state, setState] = useState({fab: true, route: null});
 
@@ -137,10 +142,16 @@ export default function App() {
                     <Tab.Screen name="Reminder" component={Empty}/>
                 </Tab.Navigator>
             </NavigationContainer>
+
             {state.fab ? <Fab
                 borderRadius="full"
                 colorScheme="indigo"
                 placement="bottom-right"
+                onPress={() => {
+                    if (navigationRef.isReady()) {
+                        navigationRef.navigate('MyModal');
+                    }
+                }}
                 style={{marginBottom: 50}}
                 icon={
                     <Icon
